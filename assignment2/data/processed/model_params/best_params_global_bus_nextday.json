@@ -1,0 +1,114 @@
+{
+  "task": "nextday",
+  "best_params": {
+    "num_leaves": 202,
+    "learning_rate": 0.026000059117302653,
+    "min_data_in_leaf": 2759,
+    "feature_fraction": 0.6563696899899051,
+    "bagging_fraction": 0.9208787923016158,
+    "bagging_freq": 1,
+    "lambda_l1": 7.6204817861585425,
+    "lambda_l2": 0.08916674715636552,
+    "cat_smooth": 20
+  },
+  "best_rmse": 5.329616930252767,
+  "n_trials": 10,
+  "n_features": 29,
+  "categorical_features": [
+    "bus_unique_id",
+    "zone_name"
+  ],
+  "feature_columns": [
+    "bus_unique_id",
+    "zone_name",
+    "year",
+    "month",
+    "day",
+    "dow",
+    "hour",
+    "hour_sin",
+    "hour_cos",
+    "dow_sin",
+    "dow_cos",
+    "month_sin",
+    "month_cos",
+    "is_weekend",
+    "is_holiday",
+    "is_winter_storm_elliott",
+    "zone_load_bus_count",
+    "zone_gen_bus_count",
+    "pd_lag_24h",
+    "pd_lag_48h",
+    "pd_lag_168h",
+    "pd_lag_336h",
+    "pd_lag_720h",
+    "pd_lag_8760h",
+    "pd_trailing_mean_24h_at_fc",
+    "pd_trailing_mean_168h_at_fc",
+    "zone_pd_lag_24h",
+    "zone_pd_trailing_mean_24h_at_fc",
+    "zone_pd_trailing_mean_168h_at_fc"
+  ],
+  "trial_log": [
+    {
+      "trial_number": 0,
+      "value": 5.62266035718516,
+      "best_iteration": 23,
+      "elapsed_s": 130.362455
+    },
+    {
+      "trial_number": 1,
+      "value": 5.389175606826795,
+      "best_iteration": 663,
+      "elapsed_s": 1563.983519
+    },
+    {
+      "trial_number": 2,
+      "value": 5.401527975356505,
+      "best_iteration": 282,
+      "elapsed_s": 600.777864
+    },
+    {
+      "trial_number": 3,
+      "value": 6.00057711617762,
+      "best_iteration": 78,
+      "elapsed_s": 144.672827
+    },
+    {
+      "trial_number": 4,
+      "value": 5.350655807655213,
+      "best_iteration": 378,
+      "elapsed_s": 587.231245
+    },
+    {
+      "trial_number": 5,
+      "value": 5.385128553076958,
+      "best_iteration": 225,
+      "elapsed_s": 489.838176
+    },
+    {
+      "trial_number": 6,
+      "value": 5.725954608489922,
+      "best_iteration": 27,
+      "elapsed_s": 114.867173
+    },
+    {
+      "trial_number": 7,
+      "value": 5.329616930252767,
+      "best_iteration": 217,
+      "elapsed_s": 308.366401
+    },
+    {
+      "trial_number": 8,
+      "value": 5.574168274144281,
+      "best_iteration": 45,
+      "elapsed_s": 51.312858
+    },
+    {
+      "trial_number": 9,
+      "value": 5.812580296365562,
+      "best_iteration": 294,
+      "elapsed_s": 567.19563
+    }
+  ]
+}

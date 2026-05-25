@@ -1,0 +1,111 @@
+{
+  "task": "nextmonth",
+  "best_params": {
+    "num_leaves": 371,
+    "learning_rate": 0.010725209743171997,
+    "min_data_in_leaf": 4853,
+    "feature_fraction": 0.9329770563201687,
+    "bagging_fraction": 0.6849356442713105,
+    "bagging_freq": 2,
+    "lambda_l1": 4.4734294104626844e-07,
+    "lambda_l2": 5.472429642032189e-06,
+    "cat_smooth": 53
+  },
+  "best_rmse": 7.66877594471383,
+  "n_trials": 10,
+  "n_features": 26,
+  "categorical_features": [
+    "bus_unique_id",
+    "zone_name"
+  ],
+  "feature_columns": [
+    "bus_unique_id",
+    "zone_name",
+    "year",
+    "month",
+    "day",
+    "dow",
+    "hour",
+    "hour_sin",
+    "hour_cos",
+    "dow_sin",
+    "dow_cos",
+    "month_sin",
+    "month_cos",
+    "is_weekend",
+    "is_holiday",
+    "is_winter_storm_elliott",
+    "zone_load_bus_count",
+    "zone_gen_bus_count",
+    "pd_lag_1440h",
+    "pd_lag_2160h",
+    "pd_lag_8760h",
+    "pd_trailing_mean_30d_at_fc",
+    "pd_trailing_mean_90d_at_fc",
+    "zone_pd_lag_1440h",
+    "zone_pd_trailing_mean_30d_at_fc",
+    "zone_pd_trailing_mean_90d_at_fc"
+  ],
+  "trial_log": [
+    {
+      "trial_number": 0,
+      "value": 8.215265682768006,
+      "best_iteration": 10,
+      "elapsed_s": 108.013663
+    },
+    {
+      "trial_number": 1,
+      "value": 7.66877594471383,
+      "best_iteration": 359,
+      "elapsed_s": 953.557513
+    },
+    {
+      "trial_number": 2,
+      "value": 8.068774283353404,
+      "best_iteration": 125,
+      "elapsed_s": 309.034484
+    },
+    {
+      "trial_number": 3,
+      "value": 8.12163804406601,
+      "best_iteration": 42,
+      "elapsed_s": 125.72291
+    },
+    {
+      "trial_number": 4,
+      "value": 8.059093190374798,
+      "best_iteration": 239,
+      "elapsed_s": 451.980128
+    },
+    {
+      "trial_number": 5,
+      "value": 7.880202567237023,
+      "best_iteration": 152,
+      "elapsed_s": 430.282124
+    },
+    {
+      "trial_number": 6,
+      "value": 8.179024323697877,
+      "best_iteration": 18,
+      "elapsed_s": 123.022431
+    },
+    {
+      "trial_number": 7,
+      "value": 7.810440281992741,
+      "best_iteration": 158,
+      "elapsed_s": 271.764606
+    },
+    {
+      "trial_number": 8,
+      "value": 8.188766695611191,
+      "best_iteration": 43,
+      "elapsed_s": 63.407839
+    },
+    {
+      "trial_number": 9,
+      "value": 7.977456438729582,
+      "best_iteration": 126,
+      "elapsed_s": 345.207453
+    }
+  ]
+}
