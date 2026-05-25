@@ -8,3 +8,6 @@ data/*.parquet
 
 !data/processed/model_params/
 !data/processed/weather_features/
+
+# Notebook 06 intermediates (regenerable from forecast parquets)
+data/processed/eval_joined/
