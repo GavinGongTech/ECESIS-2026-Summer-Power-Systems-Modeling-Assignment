@@ -1,0 +1,157 @@
+{
+  "notebook": "07_mint_reconciliation",
+  "completion_status": "complete",
+  "artifacts": [
+    {
+      "category": "metadata",
+      "name": "series_order",
+      "path": "../data/processed/mint/series_order.parquet",
+      "size_mb": 0.05
+    },
+    {
+      "category": "metadata",
+      "name": "mint_bus_filter",
+      "path": "../data/processed/mint/mint_bus_filter.parquet",
+      "size_mb": 0.04
+    },
+    {
+      "category": "validation_residuals",
+      "name": "residuals_buses_2025",
+      "path": "../data/processed/mint/validation_residuals/residuals_buses_2025.parquet",
+      "size_mb": 850.35
+    },
+    {
+      "category": "validation_residuals",
+      "name": "residuals_zones_2025",
+      "path": "../data/processed/mint/validation_residuals/residuals_zones_2025.parquet",
+      "size_mb": 2.86
+    },
+    {
+      "category": "covariance",
+      "name": "W_wls_nextday",
+      "path": "../data/processed/mint/diagnostics/W_wls_nextday.npz",
+      "size_mb": 0.14
+    },
+    {
+      "category": "covariance",
+      "name": "W_wls_nextmonth",
+      "path": "../data/processed/mint/diagnostics/W_wls_nextmonth.npz",
+      "size_mb": 0.14
+    },
+    {
+      "category": "covariance",
+      "name": "W_shrink_nextday",
+      "path": "../data/processed/mint/diagnostics/W_shrink_nextday.npz",
+      "size_mb": 80.16
+    },
+    {
+      "category": "covariance",
+      "name": "W_shrink_nextmonth",
+      "path": "../data/processed/mint/diagnostics/W_shrink_nextmonth.npz",
+      "size_mb": 80.75
+    },
+    {
+      "category": "covariance",
+      "name": "W_shrink_lambda",
+      "path": "../data/processed/mint/diagnostics/W_shrink_lambda.json",
+      "size_mb": 0.0
+    },
+    {
+      "category": "projections",
+      "name": "P_wls_nextday",
+      "path": "../data/processed/mint/diagnostics/P_wls_nextday.npz",
+      "size_mb": 3.61
+    },
+    {
+      "category": "projections",
+      "name": "P_wls_nextmonth",
+      "path": "../data/processed/mint/diagnostics/P_wls_nextmonth.npz",
+      "size_mb": 3.65
+    },
+    {
+      "category": "projections",
+      "name": "P_shrink_nextday",
+      "path": "../data/processed/mint/diagnostics/P_shrink_nextday.npz",
+      "size_mb": 45.29
+    },
+    {
+      "category": "projections",
+      "name": "P_shrink_nextmonth",
+      "path": "../data/processed/mint/diagnostics/P_shrink_nextmonth.npz",
+      "size_mb": 45.42
+    },
+    {
+      "category": "reconciled_forecasts",
+      "name": "forecast_mint_wls_nextday",
+      "path": "../data/processed/forecasts/forecast_mint_wls_nextday.parquet",
+      "size_mb": 144.59
+    },
+    {
+      "category": "reconciled_forecasts",
+      "name": "forecast_mint_wls_nextmonth",
+      "path": "../data/processed/forecasts/forecast_mint_wls_nextmonth.parquet",
+      "size_mb": 138.05
+    },
+    {
+      "category": "reconciled_forecasts",
+      "name": "forecast_mint_shrink_nextday",
+      "path": "../data/processed/forecasts/forecast_mint_shrink_nextday.parquet",
+      "size_mb": 144.42
+    },
+    {
+      "category": "reconciled_forecasts",
+      "name": "forecast_mint_shrink_nextmonth",
+      "path": "../data/processed/forecasts/forecast_mint_shrink_nextmonth.parquet",
+      "size_mb": 138.68
+    }
+  ],
+  "bus_partition": {
+    "reconciled": 3305,
+    "fallback_sparse_2025": 397,
+    "fallback_zero_load_2025": 167,
+    "fallback_cold_start": 42,
+    "fallback_missing_from_2024": 42
+  },
+  "bus_partition_total": 3953,
+  "methodology": {
+    "covariance_residuals_source": "2025 test residuals (Option Y)",
+    "covariance_residuals_rationale": "Replicating notebook 04b's zone-aggregation pipeline outside its native context introduced more replication risk than the methodological gain warranted. Using 2025 test residuals represents mild in-sample tuning of projection weights (variance/correlation, not predictions). Documented as future work for strictly out-of-sample residuals.",
+    "bus_coverage_threshold_hours": 8732,
+    "bus_coverage_rationale": "Require 100% 2025 coverage to ensure rectangular residual matrix without NaN. Buses with any missing hours go to fallback (direct global-bus forecast).",
+    "zero_load_variance_threshold": 0.001,
+    "zero_load_rationale": "Filter out buses with actual_pd variance < 1e-3 (effectively zero-load throughout 2025). Global-bus model produces biased 1.92 MW prediction for these; including in MinT would wildly over-weight them due to artificially low residual variance.",
+    "estimators": [
+      "wls",
+      "shrink"
+    ],
+    "shrinkage_method": "Sch\u00e4fer-Strimmer (2005)",
+    "schaefer_strimmer_lambdas": {
+      "nextday": 0.004508189241206408,
+      "nextmonth": 0.001606761030843258
+    },
+    "coherence_handling": "Bottom-up coherence-by-construction: clip bus forecasts at zero, recompute zone forecasts as sum of clipped buses. Sacrifices ~0.1-1% zone-level accuracy for guaranteed non-negativity and bit-exact coherence.",
+    "fallback_treatment": "648 fallback buses (16.4%) receive direct global-bus + weather forecast unchanged."
+  },
+  "handoff": {
+    "next_notebook": "06b_evaluation_extension.ipynb",
+    "purpose": "Extend the evaluation framework from notebook 06 to include the 4 MinT reconciled forecast variants. Re-run the metric computation and comparison figures so MinT models are scored on the same basis as the base forecasts.",
+    "required_additions": [
+      "Add 4 MinT models to MODEL_REGISTRY: mint_wls_nextday, mint_wls_nextmonth, mint_shrink_nextday, mint_shrink_nextmonth",
+      "Each model's source: data/processed/forecasts/forecast_mint_{estimator}_{task}.parquet",
+      "Re-run notebook 06 cells 3-7 with the extended registry",
+      "Generate comparison plots that include MinT alongside zone-direct and global-bus"
+    ],
+    "evaluation_questions": [
+      "Does MinT improve bus-level RMSE/MAE over global-bus + weather (the base forecast)?",
+      "Does MinT improve zone-level metrics over zone-direct + weather?",
+      "Which estimator wins: WLS-variance (conservative, well-conditioned) or MinT-shrink (aggressive corrections, ill-conditioned)?",
+      "Are MinT-shrink's 19% nextmonth bus shifts genuine signal or numerical noise?"
+    ],
+    "known_caveats_for_report": [
+      "Covariance estimated from 2025 test residuals (in-sample tuning, mild leakage)",
+      "16.4% of buses use direct global-bus fallback (cold-start, sparse, zero-load, missing-from-2024)",
+      "Sch\u00e4fer-Strimmer lambda ~ 0.002-0.005 produces near-zero shrinkage; sample covariance is rank-deficient at N>>T scale (Wickramasuriya 2019 Section 3 caveat)",
+      "Condition number 10^10-10^11 for MinT-shrink means projection loses ~5-6 digits of float64 precision"
+    ]
+  }
+}

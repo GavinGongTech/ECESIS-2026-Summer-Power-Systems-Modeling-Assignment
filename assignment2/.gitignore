@@ -5,10 +5,21 @@ __pycache__/
 data/processed/*
 data/*.parquet
 !data/processed/zone_models/
-
 !data/processed/model_params/
 !data/processed/weather_features/
 !data/processed/eval_results/
 !data/processed/eval_figures/
+!data/processed/eval_results_with_mint/
+!data/processed/eval_figures_with_mint/
+!data/processed/mint/
 # Notebook 06 intermediates (regenerable from forecast parquets)
 data/processed/eval_joined/
+# Notebook 06b intermediates
+data/processed/eval_joined_with_mint/
+# Notebook 07 large intermediates (regenerable; >50MB)
+data/processed/mint/validation_residuals/residuals_buses_2025.parquet
+data/processed/mint/diagnostics/W_shrink_nextday.npz
+data/processed/mint/diagnostics/W_shrink_nextmonth.npz
+data/processed/mint/diagnostics/P_shrink_nextday.npz
+data/processed/mint/diagnostics/P_shrink_nextmonth.npz
+data/processed/mint/refit_models/
