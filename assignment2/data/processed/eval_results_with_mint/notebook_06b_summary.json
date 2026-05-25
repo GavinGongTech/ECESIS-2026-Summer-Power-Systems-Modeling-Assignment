@@ -1,0 +1,459 @@
+{
+  "notebook": "06b_evaluation_with_mint",
+  "purpose": "Extends notebook 06's evaluation with the 4 MinT-reconciled forecast variants (WLS and Shrink, nextday and nextmonth), stratified by bus_population.",
+  "primary_population_for_headline": "mint_reconciled (3,305 buses)",
+  "manifest": {
+    "metrics_parquets": {
+      "core_metrics": "data/processed/eval_results_with_mint/core_metrics.parquet",
+      "per_zone_metrics": "data/processed/eval_results_with_mint/per_zone_metrics.parquet",
+      "per_hour_metrics": "data/processed/eval_results_with_mint/per_hour_metrics.parquet",
+      "cold_start_metrics": "data/processed/eval_results_with_mint/cold_start_metrics.parquet",
+      "headline_three_way_comparison": "data/processed/eval_results_with_mint/headline_three_way_comparison.parquet",
+      "scaling_laws": "data/processed/eval_results_with_mint/scaling_laws.parquet",
+      "mint_deep_dive": "data/processed/eval_results_with_mint/mint_deep_dive.parquet",
+      "fallback_sanity_check": "data/processed/eval_results_with_mint/fallback_sanity_check.parquet"
+    },
+    "figures": [
+      "data/processed/eval_figures_with_mint/cold_start_rmse_nextday.png",
+      "data/processed/eval_figures_with_mint/cold_start_rmse_nextmonth.png",
+      "data/processed/eval_figures_with_mint/mint_shift_distribution_nextday.png",
+      "data/processed/eval_figures_with_mint/mint_shift_distribution_nextmonth.png",
+      "data/processed/eval_figures_with_mint/mint_shrink_helps_hurts_nextday.png",
+      "data/processed/eval_figures_with_mint/mint_shrink_helps_hurts_nextmonth.png",
+      "data/processed/eval_figures_with_mint/negative_predictions_nextday.png",
+      "data/processed/eval_figures_with_mint/negative_predictions_nextmonth.png",
+      "data/processed/eval_figures_with_mint/per_hour_rmse_nextday.png",
+      "data/processed/eval_figures_with_mint/per_hour_rmse_nextmonth.png",
+      "data/processed/eval_figures_with_mint/per_zone_rmse_nextday.png",
+      "data/processed/eval_figures_with_mint/per_zone_rmse_nextmonth.png",
+      "data/processed/eval_figures_with_mint/scaling_law_nextday.png",
+      "data/processed/eval_figures_with_mint/scaling_law_nextmonth.png",
+      "data/processed/eval_figures_with_mint/three_way_comparison_nextday.png",
+      "data/processed/eval_figures_with_mint/three_way_comparison_nextmonth.png"
+    ],
+    "joined_frames_dir": "data/processed/eval_joined_with_mint",
+    "joined_frames_count": 18
+  },
+  "headline_three_way_comparison": {
+    "nextday": {
+      "snaive": {
+        "best_bus_variant": "prev_recent",
+        "bus_rmse": 4.956449694916135,
+        "bus_mae": 1.8210979499632063,
+        "bus_wmape": 0.12285622792635528,
+        "best_zone_variant": "prev_year",
+        "zone_rmse": 1186.8990908230953,
+        "zone_mae": 687.6983898304323,
+        "zone_wmape": 0.11230016701682996
+      },
+      "zone_direct": {
+        "best_bus_variant": "zone_direct_lgbm_weather",
+        "bus_rmse": 12.926448180950981,
+        "bus_mae": 3.629733631171306,
+        "bus_wmape": 0.24487171725834347,
+        "best_zone_variant": "zone_direct_lgbm_weather",
+        "zone_rmse": 396.807929254191,
+        "zone_mae": 266.78460150082316,
+        "zone_wmape": 0.04356554522898938
+      },
+      "global_bus": {
+        "best_bus_variant": "global_bus_lgbm_weather",
+        "bus_rmse": 7.334834190608629,
+        "bus_mae": 1.078830618482799,
+        "bus_wmape": 0.07278085199147662,
+        "best_zone_variant": "global_bus_lgbm_weather",
+        "zone_rmse": 434.2959819240896,
+        "zone_mae": 288.0207031269255,
+        "zone_wmape": 0.04703337036085525
+      },
+      "mint": {
+        "best_bus_variant": "mint_shrink",
+        "bus_rmse": 5.008612577341941,
+        "bus_mae": 1.079274989126459,
+        "bus_wmape": 0.07281083044545399,
+        "best_zone_variant": "mint_shrink",
+        "zone_rmse": 377.5495430403418,
+        "zone_mae": 255.9912265013068,
+        "zone_wmape": 0.04180300247326207
+      }
+    },
+    "nextmonth": {
+      "snaive": {
+        "best_bus_variant": "prev_recent",
+        "bus_rmse": 8.64961970269989,
+        "bus_mae": 3.679153128201516,
+        "bus_wmape": 0.2482056911345273,
+        "best_zone_variant": "prev_year",
+        "zone_rmse": 1186.8990908230953,
+        "zone_mae": 687.6983898304323,
+        "zone_wmape": 0.11230016701682996
+      },
+      "zone_direct": {
+        "best_bus_variant": "zone_direct_lgbm_weather",
+        "bus_rmse": 12.974428560153992,
+        "bus_mae": 3.591620181838152,
+        "bus_wmape": 0.2423004801546895,
+        "best_zone_variant": "zone_direct_lgbm_weather",
+        "zone_rmse": 455.1698876148565,
+        "zone_mae": 311.1995211230113,
+        "zone_wmape": 0.05081843830736443
+      },
+      "global_bus": {
+        "best_bus_variant": "global_bus_lgbm_weather",
+        "bus_rmse": 10.254601807685923,
+        "bus_mae": 3.1354503564232954,
+        "bus_wmape": 0.21152602123806416,
+        "best_zone_variant": "global_bus_lgbm_weather",
+        "zone_rmse": 784.6215494586917,
+        "zone_mae": 515.5324517964566,
+        "zone_wmape": 0.08418571469043731
+      },
+      "mint": {
+        "best_bus_variant": "mint_shrink",
+        "bus_rmse": 9.143100250864133,
+        "bus_mae": 3.4656850960508847,
+        "bus_wmape": 0.23380455625135516,
+        "best_zone_variant": "mint_shrink",
+        "zone_rmse": 407.9279949279604,
+        "zone_mae": 300.7471680267734,
+        "zone_wmape": 0.04911158394245043
+      }
+    }
+  },
+  "full_rankings_by_rmse": {
+    "nextday": {
+      "bus": [
+        {
+          "rank": 1,
+          "model_key": "prev_recent",
+          "rmse": 4.956449694916135
+        },
+        {
+          "rank": 2,
+          "model_key": "mint_shrink",
+          "rmse": 5.008612577341941
+        },
+        {
+          "rank": 3,
+          "model_key": "mint_wls",
+          "rmse": 5.359535982753209
+        },
+        {
+          "rank": 4,
+          "model_key": "global_bus_lgbm_weather",
+          "rmse": 7.334834190608629
+        },
+        {
+          "rank": 5,
+          "model_key": "global_bus_lgbm",
+          "rmse": 7.464361761981867
+        },
+        {
+          "rank": 6,
+          "model_key": "prev_year",
+          "rmse": 12.286612582553165
+        },
+        {
+          "rank": 7,
+          "model_key": "zone_direct_lgbm_weather",
+          "rmse": 12.926448180950981
+        },
+        {
+          "rank": 8,
+          "model_key": "hist_avg",
+          "rmse": 12.946249275769134
+        },
+        {
+          "rank": 9,
+          "model_key": "zone_direct_lgbm",
+          "rmse": 13.010203903150805
+        }
+      ],
+      "zone": [
+        {
+          "rank": 1,
+          "model_key": "mint_shrink",
+          "rmse": 377.5495430403418
+        },
+        {
+          "rank": 2,
+          "model_key": "zone_direct_lgbm_weather",
+          "rmse": 396.807929254191
+        },
+        {
+          "rank": 3,
+          "model_key": "mint_wls",
+          "rmse": 416.9974043832606
+        },
+        {
+          "rank": 4,
+          "model_key": "global_bus_lgbm_weather",
+          "rmse": 434.2959819240896
+        },
+        {
+          "rank": 5,
+          "model_key": "global_bus_lgbm",
+          "rmse": 661.9848443405735
+        },
+        {
+          "rank": 6,
+          "model_key": "zone_direct_lgbm",
+          "rmse": 686.7126965838896
+        },
+        {
+          "rank": 7,
+          "model_key": "prev_year",
+          "rmse": 1186.8990908230953
+        },
+        {
+          "rank": 8,
+          "model_key": "prev_recent",
+          "rmse": 1198.9838445546682
+        },
+        {
+          "rank": 9,
+          "model_key": "hist_avg",
+          "rmse": 1529.3829585746132
+        }
+      ]
+    },
+    "nextmonth": {
+      "bus": [
+        {
+          "rank": 1,
+          "model_key": "prev_recent",
+          "rmse": 8.64961970269989
+        },
+        {
+          "rank": 2,
+          "model_key": "mint_shrink",
+          "rmse": 9.143100250864133
+        },
+        {
+          "rank": 3,
+          "model_key": "mint_wls",
+          "rmse": 9.526949892770283
+        },
+        {
+          "rank": 4,
+          "model_key": "global_bus_lgbm_weather",
+          "rmse": 10.254601807685923
+        },
+        {
+          "rank": 5,
+          "model_key": "global_bus_lgbm",
+          "rmse": 10.41286843647339
+        },
+        {
+          "rank": 6,
+          "model_key": "prev_year",
+          "rmse": 12.286612582553165
+        },
+        {
+          "rank": 7,
+          "model_key": "hist_avg",
+          "rmse": 12.946249275769134
+        },
+        {
+          "rank": 8,
+          "model_key": "zone_direct_lgbm_weather",
+          "rmse": 12.974428560153992
+        },
+        {
+          "rank": 9,
+          "model_key": "zone_direct_lgbm",
+          "rmse": 13.325567644015909
+        }
+      ],
+      "zone": [
+        {
+          "rank": 1,
+          "model_key": "mint_shrink",
+          "rmse": 407.9279949279604
+        },
+        {
+          "rank": 2,
+          "model_key": "zone_direct_lgbm_weather",
+          "rmse": 455.1698876148565
+        },
+        {
+          "rank": 3,
+          "model_key": "mint_wls",
+          "rmse": 740.4859891990769
+        },
+        {
+          "rank": 4,
+          "model_key": "global_bus_lgbm_weather",
+          "rmse": 784.6215494586917
+        },
+        {
+          "rank": 5,
+          "model_key": "zone_direct_lgbm",
+          "rmse": 1030.958527219826
+        },
+        {
+          "rank": 6,
+          "model_key": "global_bus_lgbm",
+          "rmse": 1051.371923069511
+        },
+        {
+          "rank": 7,
+          "model_key": "prev_year",
+          "rmse": 1186.8990908230953
+        },
+        {
+          "rank": 8,
+          "model_key": "hist_avg",
+          "rmse": 1529.3829585746132
+        },
+        {
+          "rank": 9,
+          "model_key": "prev_recent",
+          "rmse": 1841.8942527356319
+        }
+      ]
+    }
+  },
+  "bus_population_comparison": {
+    "nextday": {
+      "global_bus_lgbm_weather": {
+        "all": {
+          "bus_rmse": 7.747918945614763,
+          "zone_rmse": 468.2576916569657,
+          "negative_pct": 2.106717638956056
+        },
+        "mint_reconciled": {
+          "bus_rmse": 7.334834190608629,
+          "zone_rmse": 434.2959819240896,
+          "negative_pct": 0.7354900991917326
+        },
+        "mint_fallback": {
+          "bus_rmse": 10.508103882231195,
+          "zone_rmse": 81.51867549105505,
+          "negative_pct": 13.196782552110337
+        }
+      },
+      "mint_wls": {
+        "all": {
+          "bus_rmse": 6.141199097029924,
+          "zone_rmse": 451.4964060455784,
+          "negative_pct": 0.0
+        },
+        "mint_reconciled": {
+          "bus_rmse": 5.359535982753209,
+          "zone_rmse": 416.9974043832606,
+          "negative_pct": 0.0
+        },
+        "mint_fallback": {
+          "bus_rmse": 10.508103882231195,
+          "zone_rmse": 81.51867549105505,
+          "negative_pct": 0.0
+        }
+      },
+      "mint_shrink": {
+        "all": {
+          "bus_rmse": 5.871649591584308,
+          "zone_rmse": 407.45053183956827,
+          "negative_pct": 0.0
+        },
+        "mint_reconciled": {
+          "bus_rmse": 5.008612577341941,
+          "zone_rmse": 377.5495430403418,
+          "negative_pct": 0.0
+        },
+        "mint_fallback": {
+          "bus_rmse": 10.508103882231195,
+          "zone_rmse": 81.51867549105505,
+          "negative_pct": 0.0
+        }
+      }
+    },
+    "nextmonth": {
+      "global_bus_lgbm_weather": {
+        "all": {
+          "bus_rmse": 10.636225630305685,
+          "zone_rmse": 817.4961987243435,
+          "negative_pct": 0.0
+        },
+        "mint_reconciled": {
+          "bus_rmse": 10.254601807685923,
+          "zone_rmse": 784.6215494586917,
+          "negative_pct": 0.0
+        },
+        "mint_fallback": {
+          "bus_rmse": 13.326961682936853,
+          "zone_rmse": 98.01643903256428,
+          "negative_pct": 0.0
+        }
+      },
+      "mint_wls": {
+        "all": {
+          "bus_rmse": 10.015943369136075,
+          "zone_rmse": 774.2979536399021,
+          "negative_pct": 0.0
+        },
+        "mint_reconciled": {
+          "bus_rmse": 9.526949892770283,
+          "zone_rmse": 740.4859891990769,
+          "negative_pct": 0.0
+        },
+        "mint_fallback": {
+          "bus_rmse": 13.326961682936853,
+          "zone_rmse": 98.01643903256428,
+          "negative_pct": 0.0
+        }
+      },
+      "mint_shrink": {
+        "all": {
+          "bus_rmse": 9.692328036902163,
+          "zone_rmse": 433.9372435884976,
+          "negative_pct": 0.0
+        },
+        "mint_reconciled": {
+          "bus_rmse": 9.143100250864133,
+          "zone_rmse": 407.9279949279604,
+          "negative_pct": 0.0
+        },
+        "mint_fallback": {
+          "bus_rmse": 13.326961682936853,
+          "zone_rmse": 98.01643903256428,
+          "negative_pct": 0.0
+        }
+      }
+    }
+  },
+  "methodology": {
+    "bus_population_partition": {
+      "total_buses_2025": 3953,
+      "reconciled_buses": 3305,
+      "fallback_buses": 648,
+      "fallback_subcategories": {
+        "reconciled": 3305,
+        "fallback_sparse_2025": 397,
+        "fallback_zero_load_2025": 167,
+        "fallback_cold_start": 42,
+        "fallback_missing_from_2024": 42
+      }
+    },
+    "schaefer_strimmer_lambdas": {
+      "nextday": 0.004508189241206408,
+      "nextmonth": 0.001606761030843258
+    },
+    "key_caveats": [
+      "MinT-shrink's aggregate improvements concentrate at a small number of high-voltage transmission buses, notably CHLDDATA_345KV_1 (NOTH, 345kV) with per-bus RMSE reductions of 194 MW (nextday) and 222 MW (nextmonth). Aggregate wins are not uniformly distributed across the bus population.",
+      "35.4% of reconciled buses are hurt by MinT-shrink for nextday (1,169 of 3,305); 45.4% for nextmonth (1,499 of 3,305). The aggregate RMSE improvement comes from a few large wins outweighing many small losses.",
+      "global_bus models depart from the Sevlian-Rajagopal scaling-law pattern for nextmonth: \u03b2 \u2248 0.29 vs the literature's 0.5-0.7 cluster. This indicates small-load buses receive systematically worse forecasts. MinT inherits rather than corrects this bias.",
+      "NOTH zone bus-RMSE improvement (24.60 \u2192 10.86 MW for nextday) is almost entirely driven by CHLDDATA_345KV_1's 194 MW reduction. 163 NOTH buses are hurt by MinT-shrink for nextday, while only 12 are helped. The concentrated improvement dominates the aggregate.",
+      "FWES is the zone where MinT-shrink consistently hurts: 258 buses hurt vs 11 helped for nextday. The pattern is consistent with FWES being the growth zone with industrial load that's harder to model with weather + bus categorical features.",
+      "MinT models produce 0% negative predictions across the full bus universe (both reconciled and fallback) due to coherence-by-construction clipping in notebook 07 Cell 5. global_bus_lgbm_weather alone produces 2.107% negatives nextday (13.197% on fallback population). Deploying MinT eliminates these structurally.",
+      "MinT vs base on fallback buses: verified bit-exact identity of clipped predictions. The only nominal difference is that MinT enforces non-negativity (clipping) that the base model lacks. This is a small production advantage for MinT beyond reconciliation itself.",
+      "For bus-level RMSE on reconciled buses, prev_recent (a na\u00efve 1-week lookback baseline for nextday, 63-day for nextmonth) beats MinT-shrink narrowly (4.96 vs 5.01 nextday; 8.65 vs 9.14 nextmonth). prev_recent's zone-level RMSE is 3-4\u00d7 worse than MinT-shrink \u2014 the classic bus-vs-zone trade-off at maximum amplitude."
+    ],
+    "stratification_summary": {
+      "per_zone_finding": "MinT-shrink improvements concentrate in NOTH and SCEN (metropolitan Austin); neutral or worse on COAS, EAST, NCEN, SOUT, WEST; hurt in FWES.",
+      "per_hour_finding": "For nextmonth, MinT inverts the conventional peak/off-peak pattern. MinT-shrink RMSE ratio peak/off-peak = 0.931 vs \u2248 1.02-1.18 for all baselines. Improvement concentrates at peak hours (HE 14-19, summer afternoon HVAC window).",
+      "cold_start_finding": "global_bus models handle cold-start better than zone_direct in absolute MW (2.2 MW RMSE vs 15.7 MW), because zone_direct's share-fallback assumes average load while small new substations have minimal load. MinT cannot help cold-start by construction.",
+      "scaling_law_finding": "\u03b2 \u2248 0.55-0.70 for sNa\u00efve and zone_direct models; \u03b2 \u2248 0.29 for global_bus and MinT on nextmonth. The literature cluster is 0.5-0.7. global_bus/MinT nextmonth departs from this pattern, indicating non-classical error structure."
+    }
+  }
+}
