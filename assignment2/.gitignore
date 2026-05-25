@@ -7,3 +7,4 @@ data/*.parquet
 !data/processed/zone_models/
 
 !data/processed/model_params/
+!data/processed/weather_features/
