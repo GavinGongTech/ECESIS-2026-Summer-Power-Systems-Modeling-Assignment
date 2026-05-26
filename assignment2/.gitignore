@@ -23,3 +23,4 @@ data/processed/mint/diagnostics/W_shrink_nextmonth.npz
 data/processed/mint/diagnostics/P_shrink_nextday.npz
 data/processed/mint/diagnostics/P_shrink_nextmonth.npz
 data/processed/mint/refit_models/
+!data/processed/forecasts/
